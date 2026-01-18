@@ -401,7 +401,7 @@
     <div class="media-library-container">
         <div class="media-library-header">
             <h1>Ejemplo para Miguel Prado</h1>
-            <p>Biblioteca de Documentos</p>
+            <p>Sin duda la mejor puta pagina de la historia</p>
         </div>
         
         <div class="media-library-actions">
@@ -415,9 +415,6 @@
                     <option value="other">Otros</option>
                 </select>
             </div>
-            <button class="download-all-btn" id="download-all-btn">
-                ⬇️ Descargar Todos (ZIP)
-            </button>
         </div>
 
         <!-- Category Tabs (Virtual Folders) -->
@@ -723,24 +720,6 @@
         // Filter functionality
         document.getElementById('file-filter').addEventListener('change', function() {
             filterFiles();
-        });
-        
-        // Download all files
-        document.getElementById('download-all-btn').addEventListener('click', function() {
-            // Create a simple download list (can't create ZIP client-side easily)
-            // Alternative: Use JSZip library if you want true ZIP download
-            const fileList = filteredFiles.map(f => f.name).join('\n');
-            const blob = new Blob([`Archivos para descargar:\n\n${fileList}\n\nNota: Por favor descarga los archivos individualmente o usa una extensión del navegador para descargar todos a la vez.`], { type: 'text/plain' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = 'lista-archivos.txt';
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
-            
-            alert(`${filteredFiles.length} archivos encontrados. Para descargar todos en ZIP, considera usar una extensión del navegador o descargar los archivos individualmente.`);
         });
         
         // Preview modal
