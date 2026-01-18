@@ -671,10 +671,11 @@
                 
                 filteredFiles.forEach(function(file) {
                     const icon = getFileIcon(file.type);
+                    const encodedUrl = encodeUrlPath(file.url);
                     let thumbnailHtml = '';
                     
                     if (file.type === 'image') {
-                        thumbnailHtml = `<div class="file-item-thumbnail"><img src="${escapeHtml(file.url)}" alt="${escapeHtml(file.name)}" loading="lazy"></div>`;
+                        thumbnailHtml = `<div class="file-item-thumbnail"><img src="${encodedUrl}" alt="${escapeHtml(file.name)}" loading="lazy"></div>`;
                     } else if (file.type === 'video') {
                         thumbnailHtml = `<div class="file-item-thumbnail"><span class="file-icon-placeholder">${icon}</span></div>`;
                     } else {
@@ -688,10 +689,10 @@
                             ${file.size ? `<div class="file-item-size">${formatFileSize(file.size)}</div>` : ''}
                             <div class="file-item-actions">
                                 ${file.type === 'image' || file.type === 'video' ? 
-                                    `<button class="download-btn preview-btn" data-url="${escapeHtml(file.url)}" data-type="${file.type}">👁️ Vista Previa</button>` : 
+                                    `<button class="download-btn preview-btn" data-url="${encodedUrl}" data-type="${file.type}">👁️ Vista Previa</button>` : 
                                     ''
                                 }
-                                    <a href="${escapeHtml(file.url)}" download class="download-btn">⬇️ Descargar</a>
+                                    <a href="${encodedUrl}" download class="download-btn">⬇️ Descargar</a>
                             </div>
                         </div>
                     `;
@@ -831,6 +832,13 @@
                 "'": '&#039;'
             };
             return text.replace(/[&<>"']/g, function(m) { return map[m]; });
+        }
+        
+        // Encode URL path - handles special characters in file paths
+        function encodeUrlPath(url) {
+            // Split the URL into parts and encode each part separately
+            // This preserves / slashes while encoding special characters
+            return url.split('/').map(part => encodeURIComponent(part)).join('/');
         }
         
         // Initialize on load
