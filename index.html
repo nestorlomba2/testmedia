@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document Library</title>
+    <title>Ejemplo para Miguel Prado</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
     <style>
         /* Reset and Base Styles */
         * {
@@ -13,11 +14,12 @@
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            line-height: 1.6;
-            color: #333;
-            background: #f5f7fa;
+            font-family: 'Crimson Text', Georgia, serif;
+            line-height: 1.8;
+            color: #3a2e1f;
+            background: #ffffff;
             padding: 2rem 1rem;
+            min-height: 100vh;
         }
 
         /* Container */
@@ -28,22 +30,28 @@
 
         /* Header */
         .media-library-header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 2rem;
-            border-radius: 12px;
+            background: transparent;
+            color: #2c2c2c;
+            padding: 3rem 2rem 2rem;
             margin-bottom: 2rem;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-bottom: 2px solid #e8e8e8;
+            position: relative;
         }
 
         .media-library-header h1 {
-            font-size: 2.5rem;
+            font-family: 'Cinzel', Georgia, serif;
+            font-size: 3.5rem;
             margin-bottom: 0.5rem;
+            letter-spacing: 3px;
+            font-weight: 400;
+            color: #1a1a1a;
         }
 
         .media-library-header p {
-            opacity: 0.9;
-            font-size: 1.1rem;
+            font-size: 1.3rem;
+            font-style: italic;
+            color: #666;
+            margin-top: 0.5rem;
         }
 
         /* Actions Bar */
@@ -57,21 +65,22 @@
         }
 
         .download-all-btn {
-            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-            color: white;
-            border: none;
+            background: transparent;
+            color: #666;
+            border: 1px solid #ddd;
             padding: 0.75rem 1.5rem;
-            border-radius: 8px;
+            border-radius: 2px;
             font-size: 1rem;
-            font-weight: 600;
+            font-weight: 400;
+            font-family: 'Crimson Text', serif;
             cursor: pointer;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
 
         .download-all-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+            background: #2c2c2c;
+            color: #fff;
+            border-color: #2c2c2c;
         }
 
         .download-all-btn:active {
@@ -92,25 +101,31 @@
 
         .search-input {
             padding: 0.75rem 1rem;
-            border: 2px solid #e0e0e0;
-            border-radius: 8px;
+            border: 1px solid #ddd;
+            border-radius: 2px;
             font-size: 1rem;
             width: 300px;
             transition: border-color 0.3s;
+            background: #fff;
+            color: #333;
+            font-family: 'Crimson Text', serif;
         }
 
         .search-input:focus {
             outline: none;
-            border-color: #667eea;
+            border-color: #999;
+            background: #fff;
         }
 
         .filter-select {
             padding: 0.75rem 1rem;
-            border: 2px solid #e0e0e0;
-            border-radius: 8px;
+            border: 1px solid #ddd;
+            border-radius: 2px;
             font-size: 1rem;
-            background: white;
+            background: #fff;
+            color: #333;
             cursor: pointer;
+            font-family: 'Crimson Text', serif;
         }
 
         /* Category Tabs (Virtual Folders) */
@@ -123,102 +138,131 @@
 
         .category-tab {
             padding: 0.75rem 1.5rem;
-            background: white;
-            border: 2px solid #e0e0e0;
-            border-radius: 8px;
+            background: transparent;
+            border: 1px solid #e8e8e8;
+            border-radius: 2px;
             cursor: pointer;
-            transition: all 0.2s;
-            font-weight: 600;
+            transition: all 0.3s ease;
+            font-weight: 400;
+            color: #666;
+            font-family: 'Crimson Text', serif;
         }
 
         .category-tab:hover {
-            border-color: #667eea;
-            color: #667eea;
+            border-color: #999;
+            color: #333;
+            background: #f9f9f9;
         }
 
         .category-tab.active {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border-color: transparent;
+            background: #2c2c2c;
+            color: #fff;
+            border-color: #2c2c2c;
         }
 
         /* File Browser */
         .file-browser {
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            background: transparent;
             overflow: hidden;
             min-height: 400px;
+            position: relative;
         }
 
         /* Files Grid */
         .files-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-            gap: 1.5rem;
-            padding: 1.5rem;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 2rem;
+            padding: 0;
         }
 
         .file-item {
-            background: #f8f9fa;
-            border: 2px solid transparent;
-            border-radius: 10px;
-            padding: 1.5rem;
+            background: transparent;
+            border: none;
+            padding: 0;
             cursor: pointer;
-            transition: all 0.3s ease;
-            text-align: center;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
+            overflow: hidden;
         }
 
         .file-item:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-            border-color: #667eea;
+            transform: translateY(-5px);
         }
 
-        .file-icon {
-            font-size: 3rem;
-            margin-bottom: 0.5rem;
-            display: block;
+        .file-item-thumbnail {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 4px;
+            margin-bottom: 0.75rem;
+            transition: all 0.4s ease;
+            background: #f5f5f5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .file-item:hover .file-item-thumbnail {
+            transform: scale(1.05);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+        }
+
+        .file-item-thumbnail img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .file-item-thumbnail .file-icon-placeholder {
+            font-size: 4rem;
+            color: #ccc;
         }
 
         .file-item-name {
-            font-weight: 600;
+            font-weight: 400;
             color: #333;
             word-break: break-word;
             margin-bottom: 0.25rem;
             font-size: 0.95rem;
+            line-height: 1.4;
+            text-align: left;
         }
 
         .file-item-size {
-            font-size: 0.85rem;
-            color: #666;
+            font-size: 0.8rem;
+            color: #999;
             margin-top: 0.25rem;
+            font-style: italic;
         }
 
         .file-item-actions {
-            margin-top: 0.75rem;
+            margin-top: 1rem;
             display: flex;
             gap: 0.5rem;
-            justify-content: center;
+            justify-content: flex-start;
             flex-wrap: wrap;
         }
 
         .download-btn {
-            background: #667eea;
-            color: white;
-            border: none;
-            padding: 0.5rem 1rem;
-            border-radius: 6px;
-            font-size: 0.9rem;
+            background: transparent;
+            color: #666;
+            border: 1px solid #ddd;
+            padding: 0.4rem 0.9rem;
+            border-radius: 2px;
+            font-size: 0.85rem;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.3s ease;
             text-decoration: none;
             display: inline-block;
+            font-family: 'Crimson Text', serif;
         }
 
         .download-btn:hover {
-            background: #764ba2;
+            background: #2c2c2c;
+            color: #fff;
+            border-color: #2c2c2c;
         }
 
         /* Empty State */
@@ -226,6 +270,7 @@
             text-align: center;
             padding: 4rem 2rem;
             color: #999;
+            font-family: 'Crimson Text', serif;
         }
 
         .empty-state-icon {
@@ -237,21 +282,23 @@
         .loading {
             text-align: center;
             padding: 3rem;
-            color: #667eea;
+            color: #999;
             font-size: 1.2rem;
+            font-family: 'Crimson Text', serif;
         }
 
         /* File Type Colors */
-        .file-item[data-type="pdf"] .file-icon { color: #e74c3c; }
-        .file-item[data-type="image"] .file-icon { color: #3498db; }
-        .file-item[data-type="video"] .file-icon { color: #9b59b6; }
-        .file-item[data-type="other"] .file-icon { color: #95a5a6; }
+        .file-item[data-type="pdf"] .file-icon-placeholder { color: #e74c3c; }
+        .file-item[data-type="image"] .file-icon-placeholder { color: #3498db; }
+        .file-item[data-type="video"] .file-icon-placeholder { color: #9b59b6; }
+        .file-item[data-type="other"] .file-icon-placeholder { color: #95a5a6; }
 
         /* Stats Bar */
         .stats-bar {
-            background: #f8f9fa;
-            padding: 1rem 1.5rem;
-            border-bottom: 2px solid #e0e0e0;
+            background: transparent;
+            padding: 1rem 0 1.5rem;
+            border-bottom: 1px solid #e8e8e8;
+            margin-bottom: 2rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -262,6 +309,7 @@
         .stats-info {
             color: #666;
             font-size: 0.95rem;
+            font-family: 'Crimson Text', serif;
         }
 
         /* Preview Modal */
@@ -352,23 +400,23 @@
 <body>
     <div class="media-library-container">
         <div class="media-library-header">
-            <h1>📚 Document Library</h1>
-            <p>Browse and download your files</p>
+            <h1>Ejemplo para Miguel Prado</h1>
+            <p>Biblioteca de Documentos</p>
         </div>
         
         <div class="media-library-actions">
             <div class="media-library-filters">
-                <input type="text" class="search-input" id="file-search" placeholder="🔍 Search files...">
+                <input type="text" class="search-input" id="file-search" placeholder="🔍 Buscar archivos...">
                 <select class="filter-select" id="file-filter">
-                    <option value="all">All Files</option>
+                    <option value="all">Todos los Archivos</option>
                     <option value="pdf">PDFs</option>
-                    <option value="image">Images</option>
+                    <option value="image">Imágenes</option>
                     <option value="video">Videos</option>
-                    <option value="other">Other</option>
+                    <option value="other">Otros</option>
                 </select>
             </div>
             <button class="download-all-btn" id="download-all-btn">
-                ⬇️ Download All Files (ZIP)
+                ⬇️ Descargar Todos (ZIP)
             </button>
         </div>
 
@@ -376,7 +424,7 @@
         <div class="category-tabs" id="category-tabs"></div>
         
         <div class="file-browser" id="file-browser">
-            <div class="loading">Loading files...</div>
+            <div class="loading">Cargando archivos...</div>
         </div>
     </div>
 
@@ -561,11 +609,11 @@
         // Update category tabs
         function updateCategoryTabs() {
             const categories = {
-                'all': { name: '📁 All Files', count: allFiles.length },
+                'all': { name: '📁 Todos los Archivos', count: allFiles.length },
                 'pdf': { name: '📄 PDFs', count: allFiles.filter(f => f.type === 'pdf').length },
-                'image': { name: '🖼️ Images', count: allFiles.filter(f => f.type === 'image').length },
+                'image': { name: '🖼️ Imágenes', count: allFiles.filter(f => f.type === 'image').length },
                 'video': { name: '🎬 Videos', count: allFiles.filter(f => f.type === 'video').length },
-                'other': { name: '📎 Other', count: allFiles.filter(f => f.type === 'other').length }
+                'other': { name: '📎 Otros', count: allFiles.filter(f => f.type === 'other').length }
             };
             
             const tabsHtml = Object.entries(categories)
@@ -614,26 +662,36 @@
             let html = '';
             
             if (filteredFiles.length === 0) {
-                html = '<div class="empty-state"><div class="empty-state-icon">📂</div><p>No files found</p></div>';
+                html = '<div class="empty-state"><div class="empty-state-icon">📂</div><p>No se encontraron archivos</p></div>';
             } else {
                 html += `<div class="stats-bar">
-                    <div class="stats-info">Showing <strong>${filteredFiles.length}</strong> of <strong>${allFiles.length}</strong> files</div>
+                    <div class="stats-info">Mostrando <strong>${filteredFiles.length}</strong> de <strong>${allFiles.length}</strong> archivos</div>
                 </div>`;
                 html += '<div class="files-grid">';
                 
                 filteredFiles.forEach(function(file) {
                     const icon = getFileIcon(file.type);
+                    let thumbnailHtml = '';
+                    
+                    if (file.type === 'image') {
+                        thumbnailHtml = `<div class="file-item-thumbnail"><img src="${escapeHtml(file.url)}" alt="${escapeHtml(file.name)}" loading="lazy"></div>`;
+                    } else if (file.type === 'video') {
+                        thumbnailHtml = `<div class="file-item-thumbnail"><span class="file-icon-placeholder">${icon}</span></div>`;
+                    } else {
+                        thumbnailHtml = `<div class="file-item-thumbnail"><span class="file-icon-placeholder">${icon}</span></div>`;
+                    }
+                    
                     html += `
                         <div class="file-item" data-type="${file.type}" data-name="${escapeHtml(file.name)}">
-                            <span class="file-icon">${icon}</span>
+                            ${thumbnailHtml}
                             <div class="file-item-name">${escapeHtml(file.name)}</div>
                             ${file.size ? `<div class="file-item-size">${formatFileSize(file.size)}</div>` : ''}
                             <div class="file-item-actions">
                                 ${file.type === 'image' || file.type === 'video' ? 
-                                    `<button class="download-btn preview-btn" data-url="${escapeHtml(file.url)}" data-type="${file.type}">👁️ Preview</button>` : 
+                                    `<button class="download-btn preview-btn" data-url="${escapeHtml(file.url)}" data-type="${file.type}">👁️ Vista Previa</button>` : 
                                     ''
                                 }
-                                <a href="${escapeHtml(file.url)}" download class="download-btn">⬇️ Download</a>
+                                    <a href="${escapeHtml(file.url)}" download class="download-btn">⬇️ Descargar</a>
                             </div>
                         </div>
                     `;
@@ -671,17 +729,17 @@
             // Create a simple download list (can't create ZIP client-side easily)
             // Alternative: Use JSZip library if you want true ZIP download
             const fileList = filteredFiles.map(f => f.name).join('\n');
-            const blob = new Blob([`Files to download:\n\n${fileList}\n\nNote: Please download files individually or use a browser extension to download all at once.`], { type: 'text/plain' });
+            const blob = new Blob([`Archivos para descargar:\n\n${fileList}\n\nNota: Por favor descarga los archivos individualmente o usa una extensión del navegador para descargar todos a la vez.`], { type: 'text/plain' });
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = 'file-list.txt';
+            a.download = 'lista-archivos.txt';
             document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);
             URL.revokeObjectURL(url);
             
-            alert(`${filteredFiles.length} files found. For bulk ZIP download, consider using a browser extension or downloading files individually.`);
+            alert(`${filteredFiles.length} archivos encontrados. Para descargar todos en ZIP, considera usar una extensión del navegador o descargar los archivos individualmente.`);
         });
         
         // Preview modal
