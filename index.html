@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document Library - Marexada3</title>
+    <style>
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f5f7fa;
+            padding: 2rem 1rem;
+        }
+
+        /* Container */
+        .media-library-container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* Header */
+        .media-library-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .media-library-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .media-library-header p {
+            opacity: 0.9;
+            font-size: 1.1rem;
+        }
+
+        /* Actions Bar */
+        .media-library-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .download-all-btn {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .download-all-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .download-all-btn:active {
+            transform: translateY(0);
+        }
+
+        .download-all-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        /* Search and Filter */
+        .media-library-filters {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .search-input {
+            padding: 0.75rem 1rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            width: 300px;
+            transition: border-color 0.3s;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .filter-select {
+            padding: 0.75rem 1rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            background: white;
+            cursor: pointer;
+        }
+
+        /* Category Tabs (Virtual Folders) */
+        .category-tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .category-tab {
+            padding: 0.75rem 1.5rem;
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-weight: 600;
+        }
+
+        .category-tab:hover {
+            border-color: #667eea;
+            color: #667eea;
+        }
+
+        .category-tab.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-color: transparent;
+        }
+
+        /* File Browser */
+        .file-browser {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            min-height: 400px;
+        }
+
+        /* Files Grid */
+        .files-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 1.5rem;
+            padding: 1.5rem;
+        }
+
+        .file-item {
+            background: #f8f9fa;
+            border: 2px solid transparent;
+            border-radius: 10px;
+            padding: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            position: relative;
+        }
+
+        .file-item:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            border-color: #667eea;
+        }
+
+        .file-icon {
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .file-item-name {
+            font-weight: 600;
+            color: #333;
+            word-break: break-word;
+            margin-bottom: 0.25rem;
+            font-size: 0.95rem;
+        }
+
+        .file-item-size {
+            font-size: 0.85rem;
+            color: #666;
+            margin-top: 0.25rem;
+        }
+
+        .file-item-actions {
+            margin-top: 0.75rem;
+            display: flex;
+            gap: 0.5rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .download-btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .download-btn:hover {
+            background: #764ba2;
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: #999;
+        }
+
+        .empty-state-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+        }
+
+        /* Loading State */
+        .loading {
+            text-align: center;
+            padding: 3rem;
+            color: #667eea;
+            font-size: 1.2rem;
+        }
+
+        /* File Type Colors */
+        .file-item[data-type="pdf"] .file-icon { color: #e74c3c; }
+        .file-item[data-type="image"] .file-icon { color: #3498db; }
+        .file-item[data-type="video"] .file-icon { color: #9b59b6; }
+        .file-item[data-type="other"] .file-icon { color: #95a5a6; }
+
+        /* Stats Bar */
+        .stats-bar {
+            background: #f8f9fa;
+            padding: 1rem 1.5rem;
+            border-bottom: 2px solid #e0e0e0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .stats-info {
+            color: #666;
+            font-size: 0.95rem;
+        }
+
+        /* Preview Modal */
+        .preview-modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            padding: 2rem;
+        }
+
+        .preview-modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .preview-content {
+            max-width: 90%;
+            max-height: 90%;
+            position: relative;
+        }
+
+        .preview-content img,
+        .preview-content video {
+            max-width: 100%;
+            max-height: 90vh;
+            border-radius: 8px;
+        }
+
+        .close-preview {
+            position: absolute;
+            top: -40px;
+            right: 0;
+            color: white;
+            font-size: 2rem;
+            cursor: pointer;
+            background: rgba(255, 255, 255, 0.2);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s;
+        }
+
+        .close-preview:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem;
+            }
+            
+            .media-library-header h1 {
+                font-size: 2rem;
+            }
+            
+            .files-grid {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+                gap: 1rem;
+                padding: 1rem;
+            }
+            
+            .search-input {
+                width: 100%;
+            }
+            
+            .media-library-actions {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .category-tabs {
+                overflow-x: auto;
+                padding-bottom: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="media-library-container">
+        <div class="media-library-header">
+            <h1>📚 Document Library</h1>
+            <p>Browse and download your files</p>
+        </div>
+        
+        <div class="media-library-actions">
+            <div class="media-library-filters">
+                <input type="text" class="search-input" id="file-search" placeholder="🔍 Search files...">
+                <select class="filter-select" id="file-filter">
+                    <option value="all">All Files</option>
+                    <option value="pdf">PDFs</option>
+                    <option value="image">Images</option>
+                    <option value="video">Videos</option>
+                    <option value="other">Other</option>
+                </select>
+            </div>
+            <button class="download-all-btn" id="download-all-btn">
+                ⬇️ Download All Files (ZIP)
+            </button>
+        </div>
+
+        <!-- Category Tabs (Virtual Folders) -->
+        <div class="category-tabs" id="category-tabs"></div>
+        
+        <div class="file-browser" id="file-browser">
+            <div class="loading">Loading files...</div>
+        </div>
+    </div>
+
+    <!-- Preview Modal -->
+    <div class="preview-modal" id="preview-modal">
+        <div class="preview-content" id="preview-content">
+            <span class="close-preview" id="close-preview">&times;</span>
+        </div>
+    </div>
+
+    <script>
+        // FILE DATA - WordPress.com files
+        const fileData = [
+            {
+                name: "A_Rianxeira-2-Saxofón_Alto.pdf",
+                url: "https://marexada3.wordpress.com/wp-content/uploads/2026/01/A_Rianxeira-2-Saxofón_Alto.pdf",
+                type: "pdf"
+            },
+            {
+                name: "SIDs_2021_paper_4.pdf",
+                url: "https://marexada3.wordpress.com/wp-content/uploads/2026/01/SIDs_2021_paper_4.pdf",
+                type: "pdf"
+            },
+            {
+                name: "gatomalo.jpeg",
+                url: "https://marexada3.wordpress.com/wp-content/uploads/2026/01/gatomalo.jpeg",
+                type: "image"
+            },
+            {
+                name: "natas.jpeg",
+                url: "https://marexada3.wordpress.com/wp-content/uploads/2026/01/natas.jpeg",
+                type: "image"
+            },
+            {
+                name: "WhatsApp Image 2026-01-18 at 00.41.31.jpeg",
+                url: "https://marexada3.wordpress.com/wp-content/uploads/2026/01/WhatsApp%20Image%202026-01-18%20at%2000.41.31.jpeg",
+                type: "image"
+            },
+            {
+                name: "WhatsApp Image 2026-01-18 at 00.42.16.jpeg",
+                url: "https://marexada3.wordpress.com/wp-content/uploads/2026/01/WhatsApp%20Image%202026-01-18%20at%2000.42.16.jpeg",
+                type: "image"
+            },
+            {
+                name: "WhatsApp Image 2026-01-18 at 00.42.17.jpeg",
+                url: "https://marexada3.wordpress.com/wp-content/uploads/2026/01/WhatsApp%20Image%202026-01-18%20at%2000.42.17.jpeg",
+                type: "image"
+            },
+            {
+                name: "WhatsApp Image 2026-01-18 at 00.43.14 (1).jpeg",
+                url: "https://marexada3.wordpress.com/wp-content/uploads/2026/01/WhatsApp%20Image%202026-01-18%20at%2000.43.14%20%281%29.jpeg",
+                type: "image"
+            },
+            {
+                name: "WhatsApp Image 2026-01-18 at 00.43.14.jpeg",
+                url: "https://marexada3.wordpress.com/wp-content/uploads/2026/01/WhatsApp%20Image%202026-01-18%20at%2000.43.14.jpeg",
+                type: "image"
+            },
+            {
+                name: "WhatsApp Image 2026-01-18 at 00.43.15.jpeg",
+                url: "https://marexada3.wordpress.com/wp-content/uploads/2026/01/WhatsApp%20Image%202026-01-18%20at%2000.43.15.jpeg",
+                type: "image"
+            },
+            {
+                name: "WhatsApp Image 2026-01-18 at 00.43.16.jpeg",
+                url: "https://marexada3.wordpress.com/wp-content/uploads/2026/01/WhatsApp%20Image%202026-01-18%20at%2000.43.16.jpeg",
+                type: "image"
+            },
+            {
+                name: "WhatsApp Image 2026-01-18 at 00.43.17.jpeg",
+                url: "https://marexada3.wordpress.com/wp-content/uploads/2026/01/WhatsApp%20Image%202026-01-18%20at%2000.43.17.jpeg",
+                type: "image"
+            },
+            {
+                name: "WhatsApp Image 2026-01-18 at 00.43.18.jpeg",
+                url: "https://marexada3.wordpress.com/wp-content/uploads/2026/01/WhatsApp%20Image%202026-01-18%20at%2000.43.18.jpeg",
+                type: "image"
+            },
+            {
+                name: "WhatsApp Image 2026-01-18 at 00.43.20.jpeg",
+                url: "https://marexada3.wordpress.com/wp-content/uploads/2026/01/WhatsApp%20Image%202026-01-18%20at%2000.43.20.jpeg",
+                type: "image"
+            },
+            {
+                name: "WhatsApp Image 2026-01-18 at 00.43.24.jpeg",
+                url: "https://marexada3.wordpress.com/wp-content/uploads/2026/01/WhatsApp%20Image%202026-01-18%20at%2000.43.24.jpeg",
+                type: "image"
+            },
+            {
+                name: "WhatsApp Image 2026-01-18 at 00.43.30.jpeg",
+                url: "https://marexada3.wordpress.com/wp-content/uploads/2026/01/WhatsApp%20Image%202026-01-18%20at%2000.43.30.jpeg",
+                type: "image"
+            },
+            {
+                name: "WhatsApp Image 2026-01-18 at 00.43.41.jpeg",
+                url: "https://marexada3.wordpress.com/wp-content/uploads/2026/01/WhatsApp%20Image%202026-01-18%20at%2000.43.41.jpeg",
+                type: "image"
+            },
+            {
+                name: "WhatsApp Image 2026-01-18 at 00.43.42.jpeg",
+                url: "https://marexada3.wordpress.com/wp-content/uploads/2026/01/WhatsApp%20Image%202026-01-18%20at%2000.43.42.jpeg",
+                type: "image"
+            },
+            {
+                name: "WhatsApp Image 2026-01-18 at 00.43.43.jpeg",
+                url: "https://marexada3.wordpress.com/wp-content/uploads/2026/01/WhatsApp%20Image%202026-01-18%20at%2000.43.43.jpeg",
+                type: "image"
+            },
+            {
+                name: "WhatsApp Image 2026-01-18 at 00.43.44 (1).jpeg",
+                url: "https://marexada3.wordpress.com/wp-content/uploads/2026/01/WhatsApp%20Image%202026-01-18%20at%2000.43.44%20%281%29.jpeg",
+                type: "image"
+            },
+            {
+                name: "WhatsApp Image 2026-01-18 at 00.43.44.jpeg",
+                url: "https://marexada3.wordpress.com/wp-content/uploads/2026/01/WhatsApp%20Image%202026-01-18%20at%2000.43.44.jpeg",
+                type: "image"
+            },
+            {
+                name: "WhatsApp Image 2026-01-18 at 00.43.45.jpeg",
+                url: "https://marexada3.wordpress.com/wp-content/uploads/2026/01/WhatsApp%20Image%202026-01-18%20at%2000.43.45.jpeg",
+                type: "image"
+            },
+            {
+                name: "WhatsApp Image 2026-01-18 at 00.43.47.jpeg",
+                url: "https://marexada3.wordpress.com/wp-content/uploads/2026/01/WhatsApp%20Image%202026-01-18%20at%2000.43.47.jpeg",
+                type: "image"
+            },
+            {
+                name: "WhatsApp Image 2026-01-18 at 00.43.48.jpeg",
+                url: "https://marexada3.wordpress.com/wp-content/uploads/2026/01/WhatsApp%20Image%202026-01-18%20at%2000.43.48.jpeg",
+                type: "image"
+            },
+            {
+                name: "WhatsApp Image 2026-01-18 at 00.43.50.jpeg",
+                url: "https://marexada3.wordpress.com/wp-content/uploads/2026/01/WhatsApp%20Image%202026-01-18%20at%2000.43.50.jpeg",
+                type: "image"
+            },
+            {
+                name: "WhatsApp Image 2026-01-18 at 00.43.52.jpeg",
+                url: "https://marexada3.wordpress.com/wp-content/uploads/2026/01/WhatsApp%20Image%202026-01-18%20at%2000.43.52.jpeg",
+                type: "image"
+            },
+            {
+                name: "WhatsApp Image 2026-01-18 at 00.43.56.jpeg",
+                url: "https://marexada3.wordpress.com/wp-content/uploads/2026/01/WhatsApp%20Image%202026-01-18%20at%2000.43.56.jpeg",
+                type: "image"
+            },
+            {
+                name: "WhatsApp Image 2026-01-18 at 00.44.02.jpeg",
+                url: "https://marexada3.wordpress.com/wp-content/uploads/2026/01/WhatsApp%20Image%202026-01-18%20at%2000.44.02.jpeg",
+                type: "image"
+            },
+            {
+                name: "gatoagua.mp4",
+                url: "https://marexada3.wordpress.com/wp-content/uploads/2026/01/gatoagua.mp4",
+                type: "video"
+            }
+        ];
+
+        let allFiles = [];
+        let filteredFiles = [];
+        let currentCategory = 'all';
+        
+        // Initialize
+        function initialize() {
+            allFiles = fileData.map(file => ({
+                ...file,
+                type: file.type || getFileType(file.name)
+            }));
+            
+            // Sort files
+            allFiles.sort((a, b) => a.name.localeCompare(b.name));
+            
+            // Update category tabs
+            updateCategoryTabs();
+            
+            // Show all files initially
+            filterFiles();
+        }
+        
+        // Update category tabs
+        function updateCategoryTabs() {
+            const categories = {
+                'all': { name: '📁 All Files', count: allFiles.length },
+                'pdf': { name: '📄 PDFs', count: allFiles.filter(f => f.type === 'pdf').length },
+                'image': { name: '🖼️ Images', count: allFiles.filter(f => f.type === 'image').length },
+                'video': { name: '🎬 Videos', count: allFiles.filter(f => f.type === 'video').length },
+                'other': { name: '📎 Other', count: allFiles.filter(f => f.type === 'other').length }
+            };
+            
+            const tabsHtml = Object.entries(categories)
+                .map(([key, cat]) => {
+                    if (cat.count === 0 && key !== 'all') return '';
+                    return `
+                        <div class="category-tab ${currentCategory === key ? 'active' : ''}" data-category="${key}">
+                            ${cat.name} <span style="opacity: 0.8;">(${cat.count})</span>
+                        </div>
+                    `;
+                })
+                .filter(html => html !== '')
+                .join('');
+            
+            document.getElementById('category-tabs').innerHTML = tabsHtml;
+            
+            // Attach click handlers
+            document.querySelectorAll('.category-tab').forEach(tab => {
+                tab.addEventListener('click', function() {
+                    currentCategory = this.getAttribute('data-category');
+                    document.querySelectorAll('.category-tab').forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                    filterFiles();
+                });
+            });
+        }
+        
+        // Filter files
+        function filterFiles() {
+            const searchTerm = document.getElementById('file-search').value.toLowerCase();
+            const filterType = document.getElementById('file-filter').value;
+            
+            filteredFiles = allFiles.filter(file => {
+                const matchesSearch = file.name.toLowerCase().includes(searchTerm);
+                const matchesCategory = currentCategory === 'all' || file.type === currentCategory;
+                const matchesType = filterType === 'all' || file.type === filterType;
+                
+                return matchesSearch && matchesCategory && matchesType;
+            });
+            
+            renderFiles();
+        }
+        
+        // Render files
+        function renderFiles() {
+            let html = '';
+            
+            if (filteredFiles.length === 0) {
+                html = '<div class="empty-state"><div class="empty-state-icon">📂</div><p>No files found</p></div>';
+            } else {
+                html += `<div class="stats-bar">
+                    <div class="stats-info">Showing <strong>${filteredFiles.length}</strong> of <strong>${allFiles.length}</strong> files</div>
+                </div>`;
+                html += '<div class="files-grid">';
+                
+                filteredFiles.forEach(function(file) {
+                    const icon = getFileIcon(file.type);
+                    html += `
+                        <div class="file-item" data-type="${file.type}" data-name="${escapeHtml(file.name)}">
+                            <span class="file-icon">${icon}</span>
+                            <div class="file-item-name">${escapeHtml(file.name)}</div>
+                            ${file.size ? `<div class="file-item-size">${formatFileSize(file.size)}</div>` : ''}
+                            <div class="file-item-actions">
+                                ${file.type === 'image' || file.type === 'video' ? 
+                                    `<button class="download-btn preview-btn" data-url="${escapeHtml(file.url)}" data-type="${file.type}">👁️ Preview</button>` : 
+                                    ''
+                                }
+                                <a href="${escapeHtml(file.url)}" download class="download-btn">⬇️ Download</a>
+                            </div>
+                        </div>
+                    `;
+                });
+                
+                html += '</div>';
+            }
+            
+            document.getElementById('file-browser').innerHTML = html;
+            
+            // Attach preview handlers
+            document.querySelectorAll('.preview-btn').forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    const url = this.getAttribute('data-url');
+                    const type = this.getAttribute('data-type');
+                    showPreview(url, type);
+                });
+            });
+        }
+        
+        // Search functionality
+        document.getElementById('file-search').addEventListener('input', function() {
+            filterFiles();
+        });
+        
+        // Filter functionality
+        document.getElementById('file-filter').addEventListener('change', function() {
+            filterFiles();
+        });
+        
+        // Download all files
+        document.getElementById('download-all-btn').addEventListener('click', function() {
+            // Create a simple download list (can't create ZIP client-side easily)
+            // Alternative: Use JSZip library if you want true ZIP download
+            const fileList = filteredFiles.map(f => f.name).join('\n');
+            const blob = new Blob([`Files to download:\n\n${fileList}\n\nNote: Please download files individually or use a browser extension to download all at once.`], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'file-list.txt';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            
+            alert(`${filteredFiles.length} files found. For bulk ZIP download, consider using a browser extension or downloading files individually.`);
+        });
+        
+        // Preview modal
+        function showPreview(url, type) {
+            const modal = document.getElementById('preview-modal');
+            const content = document.getElementById('preview-content');
+            
+            // Remove existing media
+            content.querySelectorAll('img, video').forEach(el => el.remove());
+            
+            if (type === 'image') {
+                const img = document.createElement('img');
+                img.src = url;
+                img.alt = 'Preview';
+                content.insertBefore(img, content.querySelector('.close-preview').nextSibling);
+            } else if (type === 'video') {
+                const video = document.createElement('video');
+                video.src = url;
+                video.controls = true;
+                video.autoplay = true;
+                content.insertBefore(video, content.querySelector('.close-preview').nextSibling);
+            }
+            
+            modal.classList.add('active');
+        }
+        
+        document.getElementById('close-preview').addEventListener('click', function() {
+            document.getElementById('preview-modal').classList.remove('active');
+            document.querySelectorAll('#preview-content video').forEach(v => v.pause());
+        });
+        
+        // Close modal on outside click
+        document.getElementById('preview-modal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                this.classList.remove('active');
+                document.querySelectorAll('#preview-content video').forEach(v => v.pause());
+            }
+        });
+        
+        // Close modal on Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                document.getElementById('preview-modal').classList.remove('active');
+                document.querySelectorAll('#preview-content video').forEach(v => v.pause());
+            }
+        });
+        
+        // Helper functions
+        function getFileIcon(type) {
+            const icons = {
+                'pdf': '📄',
+                'image': '🖼️',
+                'video': '🎬',
+                'other': '📎'
+            };
+            return icons[type] || icons.other;
+        }
+        
+        function getFileType(filename) {
+            const extension = filename.split('.').pop().toLowerCase();
+            const imageTypes = ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp', 'svg'];
+            const videoTypes = ['mp4', 'avi', 'mov', 'wmv', 'flv', 'webm', 'mkv'];
+            const pdfTypes = ['pdf'];
+            
+            if (imageTypes.includes(extension)) return 'image';
+            if (videoTypes.includes(extension)) return 'video';
+            if (pdfTypes.includes(extension)) return 'pdf';
+            return 'other';
+        }
+        
+        function formatFileSize(bytes) {
+            if (bytes >= 1073741824) {
+                return (bytes / 1073741824).toFixed(2) + ' GB';
+            } else if (bytes >= 1048576) {
+                return (bytes / 1048576).toFixed(2) + ' MB';
+            } else if (bytes >= 1024) {
+                return (bytes / 1024).toFixed(2) + ' KB';
+            } else {
+                return bytes + ' B';
+            }
+        }
+        
+        function escapeHtml(text) {
+            const map = {
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#039;'
+            };
+            return text.replace(/[&<>"']/g, function(m) { return map[m]; });
+        }
+        
+        // Initialize on load
+        initialize();
+    </script>
+</body>
+</html>
+
