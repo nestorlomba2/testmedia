@@ -835,10 +835,14 @@
         }
         
         // Encode URL path - handles special characters in file paths
+        // GitHub Pages uses NFD (Normalized Form Decomposed) for Unicode characters
         function encodeUrlPath(url) {
+            // Normalize to NFD (decomposed form) - required for GitHub Pages
+            // ó becomes o + combining acute accent
+            const normalized = url.normalize('NFD');
             // Split the URL into parts and encode each part separately
             // This preserves / slashes while encoding special characters
-            return url.split('/').map(part => encodeURIComponent(part)).join('/');
+            return normalized.split('/').map(part => encodeURIComponent(part)).join('/');
         }
         
         // Initialize on load
